@@ -17,6 +17,8 @@ interface AuthContextValue {
   user: User | null | undefined;
   loading: boolean;
   signOut: () => Promise<void>;
+  /** Re-render consumers after the signed-in user's profile changed (e.g. displayName). */
+  refreshUser: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -26,6 +28,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 // for the account menu, and RequireAuth uses it to guard the dashboard.
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [, setProfileVersion] = useState(0);
 
   useEffect(() => {
     // No .env.local yet → behave as "signed out" instead of crashing.
@@ -45,8 +48,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     await firebaseSignOut(getFirebaseAuth());
   }
 
+  // Firebase mutates the same User object when its profile changes, so React
+  // wouldn't notice. Bumping a counter re-renders every consumer.
+  function refreshUser() {
+    setProfileVersion((v) => v + 1);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading: user === undefined, signOut }}>
+    <AuthContext.Provider value={{ user, loading: user === undefined, signOut, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

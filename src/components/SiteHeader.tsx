@@ -119,9 +119,17 @@ export default function SiteHeader() {
                 onClick={() => toggle("account")}
                 aria-haspopup="menu"
                 aria-expanded={open === "account"}
-                className={navLink}
+                className={`${navLink} flex items-center gap-2`}
               >
-                {accountLabel}
+                {user && (
+                  <span
+                    aria-hidden="true"
+                    className="grid h-7 w-7 place-items-center rounded-full bg-xp-blue text-xs font-semibold uppercase text-white"
+                  >
+                    {accountLabel.charAt(0)}
+                  </span>
+                )}
+                <span className="max-w-[110px] truncate">{accountLabel}</span>
               </button>
               {open === "account" && (
                 <div className="xp-pop absolute right-[-12px] top-[40px] z-50 w-[340px] rounded-xl border border-xp-line bg-white shadow-[0_4px_16px_rgba(25,30,59,0.18)]">
