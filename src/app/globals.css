@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Design tokens — sampled from the Expedia reference screenshots.
+   Used as Tailwind utilities, e.g. bg-xp-blue, text-xp-navy, border-xp-line
+------------------------------------------------------------------- */
+@theme {
+  /* Desktop layout (search pill, 4-up card rows). Tablets (768–1199px) keep the
+     separated-field search row and 3-up rows, as in the tablet screenshot. */
+  --breakpoint-desk: 75rem;
+
+  --color-xp-blue: #1668e3;       /* primary action / links / active tab */
+  --color-xp-blue-dark: #0f55c0;  /* hover */
+  --color-xp-navy: #191e3b;       /* text + dark banner */
+  --color-xp-muted: #4d5062;      /* secondary text */
+  --color-xp-green: #227950;      /* rating badge, "off" badge, "total with taxes" */
+  --color-xp-member: #304ca2;     /* "Member Price available" tag */
+  --color-xp-yellow: #fddb32;     /* Featured / Promotion tags, logo */
+  --color-xp-gray: #eff3f7;       /* bundle panel + footer background */
+  --color-xp-line: #dfe0e4;       /* hairline borders */
+  --color-xp-outline: #818494;    /* outlined pill buttons */
+  --color-xp-heart: #e61e43;      /* wishlist heart */
+
+  --font-sans: "Figtree Variable", "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Source Serif 4 Variable", "Source Serif 4", Georgia, "Times New Roman", serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-xp-navy);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+/* Hide scrollbars on horizontal carousels / tab rows (still scrollable) */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Keyboard focus ring (mouse clicks stay clean) */
+:where(a, button, input, select, [role="tab"]):focus-visible {
+  outline: 2px solid var(--color-xp-blue);
+  outline-offset: 2px;
+}
+
+/* Soft entrance for dropdown menus */
+@keyframes xp-pop {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.xp-pop {
+  animation: xp-pop 0.14s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .xp-pop { animation: none; }
+}
