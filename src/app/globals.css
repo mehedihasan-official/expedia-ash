@@ -68,3 +68,17 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .xp-pop { animation: none; }
 }
+
+/* Perforated / torn-ticket edge used on the dashboard's payout stub cards */
+.stub-edge {
+  position: relative;
+}
+.stub-edge::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: 0;
+  height: 0;
+  border-top: 2px dashed var(--color-xp-line);
+}

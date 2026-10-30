@@ -10,9 +10,34 @@ Client and server both run on Next.js. Authentication (Step 2) uses **Firebase A
 | ---- | ----- | ------ |
 | 1 | Home page (desktop / tablet / mobile) + header menus | ✅ done |
 | 2 | Login + registration (Firebase Authentication, Expedia-style UI) | ✅ done |
-| 3 | Post-login dashboard (same structure as Koala's) + History page | ⏳ next |
+| 3 | Post-login dashboard (same structure and resort data as Koala's) | ✅ done |
+| History page | built next | ⏳ |
 | 4 | _to be defined_ | ⏳ |
 | 5 | _to be defined_ | ⏳ |
+
+## What Step 3 adds (dashboard)
+
+`/pages/dashboard` is a port of Koala's owner dashboard, behind the same sign-in guard:
+
+- **Your resorts** — "All Listings (N)", a **year switcher** (kept in the URL: `?year=2025`) and
+  the **total payouts** for that year, then one payout card per booking (photo, status pill,
+  Ref ID, resort, unit, location, dates, payout).
+- **Member story + resort search** (search sends you to the home page search box prefilled via
+  `/?q=…`), **"Choose your listing plan"** comparison (Do-It-Yourself vs Full-Service, desktop
+  table / phone cards, Michelle C. card), the 90-day guarantee panel, "What guests say", footer.
+- The header is the shared Expedia header — its account menu has Dashboard, History, Sign out.
+- Restyled with the Expedia palette/fonts; the layout, copy and behaviour follow Koala.
+
+**Resort data** is copied unchanged from Koala into `src/lib/dashboardContent.ts` (5 resorts,
+2025 + 2026 bookings, plus the Disney's Animal Kingdom Villas entry). There is no database, same
+as Koala: add a resort or a booking to that file and the cards, counter, totals and year list
+update by themselves (instructions are at the top of the file). Resort photos live in
+`public/images/` (`rsort-img*.webp`, `disney-animal-kingdom.jpg`).
+
+- The company name used in the dashboard copy is one constant: `BRAND_NAME` in
+  `src/lib/dashboardContent.ts` (currently "Koala").
+- The Disney entry still has Koala's placeholder booking ID `KLXXXXXX`; replace it with the real one.
+- `/pages/history` is still a placeholder.
 
 ## What Step 2 adds (authentication)
 
@@ -25,7 +50,7 @@ Client and server both run on Next.js. Authentication (Step 2) uses **Firebase A
 - **Menus when signed in** (desktop dropdown and the mobile user-icon menu): greeting with your
   email, **Dashboard**, **History**, Inbox, and **Sign out**. The header shows your first name.
 - `/pages/dashboard` and `/pages/history` are guarded: signed-out visitors are sent to login and
-  brought back afterwards. Both pages are still placeholders (Step 3).
+  brought back afterwards. `/pages/dashboard` is built in Step 3; `/pages/history` is still a placeholder.
 
 ### Firebase setup (one time)
 
@@ -50,7 +75,6 @@ Client and server both run on Next.js. Authentication (Step 2) uses **Firebase A
   banner · Seattle ad (phones only) · "Explore a world of travel" link tabs · Footer · Help button.
 - Auth scaffolding already in place for Step 2: `AuthProvider`, `useAuth()`, `RequireAuth`,
   `src/lib/firebase.ts`. The site works without any Firebase config (treated as signed-out).
-- `/pages/dashboard` is a placeholder until Step 3.
 
 ### Responsive behaviour
 
@@ -123,10 +147,12 @@ src/
                    BundleSave, VacationRentals, StaysByStyle, OneKeyBanner, SeattleAd,
                    ExploreWorld, SiteFooter
       login/ register/   Step 2 (thin wrappers around components/auth/AuthPage)
-      dashboard/ history/   Step 3 placeholders (guarded by RequireAuth)
+      dashboard/   Step 3 (RequireAuth + Koala's dashboard sections)
+      history/     placeholder (guarded by RequireAuth)
   components/      SiteHeader, AccountPanel, PreferencesDialog, Logo, UsFlag, HelpButton,
-                   AuthProvider, RequireAuth, auth/ (AuthPage, TextField, GoogleIcon)
-  lib/             homeContent.ts, firebase.ts, authErrors.ts, useClickOutside.ts
+                   AuthProvider, RequireAuth, auth/ (AuthPage, TextField, GoogleIcon),
+                   DashboardClient, ResortStub, PricingHero, PricingTable, GuaranteeSection, Testimonials
+  lib/             homeContent.ts, dashboardContent.ts (resort data), types.ts, firebase.ts,
+                   authErrors.ts, useClickOutside.ts
 public/            images/, favicon.svg
 ```
-# expedia-ash

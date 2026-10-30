@@ -80,6 +80,13 @@ export default function SearchCard() {
     }
   }, []);
 
+  // The dashboard's "browse" shortcuts link here as /?q=Hawaii — prefill the
+  // destination box with it.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q) setDestination(q.slice(0, 80));
+  }, []);
+
   const travelers = adults + children;
   const travelersLabel = `${travelers} traveler${travelers === 1 ? "" : "s"}, ${rooms} room${rooms === 1 ? "" : "s"}`;
 
