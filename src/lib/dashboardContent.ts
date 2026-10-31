@@ -22,7 +22,7 @@ export const BRAND_NAME = "Expedia";
 // default because the list is sorted newest-first.
 // ---------------------------------------------------------------------------
 
-// Koala's actual resort data (from the resort details he provided).
+// Expedia's actual resort data (from the resort details he provided).
 //
 // Scope was for 3-4 resorts on this page. The layout (grid, "All Listings (N)"
 // counter, total payout) scales cleanly to more without any code changes. To
@@ -33,8 +33,8 @@ export const BRAND_NAME = "Expedia";
 export const resorts: Resort[] = [
   {
     id: "cypress-harbour-4",
-    name: "Holiday Inn Club Vacations Orange Lake Resort",
-    unitType: "3 Bd villa",
+    name: "Holiday Inn Club Vacations Orange Lake Resort - West Village",
+    unitType: "2 Bd villa",
     location: "Orlando, Florida",
     image: "/images/rsort-img5.webp",
     bookings: [
@@ -153,6 +153,25 @@ export const resorts: Resort[] = [
     },
   ],
 },
+
+{
+    id: "marco-island-sunset-cove",
+    name: "Holiday Inn Club Vacations Marco Island - Sunset Cove Resort",
+    unitType: "3 Bedroom Villa - Water View",
+    location: "571 West Elkcam Circle, Marco Island, FL 34145",
+    // TODO: placeholder illustration. Replace public/images/marco-island-sunset-cove.webp
+    // with a real photo of the resort (same file name, landscape, ~1200x800).
+    image: "/images/marco-island-sunset-cove.jpg",
+    bookings: [
+      {
+        id: "KL363335",
+        status: "Pending", // stay is Dec 2026 (not yet paid) - change to "Paid" once the payout lands
+        dateRange: "Dec 24, 2026 - Dec 31, 2026",
+        year: 2026,
+        payoutCents: 308100, // $3,081.00
+      },
+    ],
+  },
 ];
 
 // --- Derived helpers -------------------------------------------------------

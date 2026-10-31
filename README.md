@@ -60,6 +60,9 @@ as Koala: add a resort or a booking to that file and the cards, counter, totals 
 update by themselves (instructions are at the top of the file). Resort photos live in
 `public/images/` (`rsort-img*.webp`, `disney-animal-kingdom.jpg`).
 
+- **Marco Island - Sunset Cove Resort** (Dec 24-31, 2026, $3,081) was added as a new resort. Its photo,
+  `public/images/marco-island-sunset-cove.webp`, is a placeholder illustration: replace it with a real
+  photo (same file name, landscape ~1200x800). The booking status is `Pending` until the payout is made.
 - The company name used in the dashboard copy is one constant: `BRAND_NAME` in
   `src/lib/dashboardContent.ts` (currently "Koala").
 - The Disney entry still has Koala's placeholder booking ID `KLXXXXXX`; replace it with the real one.
