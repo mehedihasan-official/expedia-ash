@@ -39,8 +39,9 @@ export default function AccountPanel({
     onNavigate();
     try {
       await signOut();
-    } finally {
       router.push("/");
+    } catch {
+      /* sign-out failed (e.g. offline) — stay where we are */
     }
   }
 

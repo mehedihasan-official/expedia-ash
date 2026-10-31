@@ -8,6 +8,7 @@ import {
   getTotalPayoutCentsForYear,
 } from "@/lib/dashboardContent";
 import { formatCents } from "@/lib/types";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -78,6 +79,12 @@ export default function DashboardClient() {
           <p className="font-display text-3xl text-xp-green leading-none">
             {formatCents(totalPayoutCents)}
           </p>
+          <Link
+            href="/pages/history"
+            className="text-sm font-semibold text-xp-blue hover:underline"
+          >
+            View booking history →
+          </Link>
         </div>
       </div>
 

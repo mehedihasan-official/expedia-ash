@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
 import { onAuthStateChanged, signOut as firebaseSignOut, type User } from "firebase/auth";
 import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 
@@ -16,6 +17,8 @@ interface AuthContextValue {
   // User      = signed in.
   user: User | null | undefined;
   loading: boolean;
+  /** True from the moment the user chooses Sign out until they land back on a public page. */
+  signingOut: boolean;
   signOut: () => Promise<void>;
   /** Re-render consumers after the signed-in user's profile changed (e.g. displayName). */
   refreshUser: () => void;
@@ -29,6 +32,13 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [, setProfileVersion] = useState(0);
+  const [signingOut, setSigningOut] = useState(false);
+  const pathname = usePathname();
+
+  // Once the user is back on a public page (home), the sign-out is over.
+  useEffect(() => {
+    if (signingOut && !pathname.startsWith("/pages/")) setSigningOut(false);
+  }, [signingOut, pathname]);
 
   useEffect(() => {
     // No .env.local yet → behave as "signed out" instead of crashing.
@@ -45,7 +55,15 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signOut() {
     if (!isFirebaseConfigured) return;
-    await firebaseSignOut(getFirebaseAuth());
+    // Tell RequireAuth this is deliberate, so it doesn't bounce the user to the
+    // login page while the caller is sending them home.
+    setSigningOut(true);
+    try {
+      await firebaseSignOut(getFirebaseAuth());
+    } catch (err) {
+      setSigningOut(false);
+      throw err;
+    }
   }
 
   // Firebase mutates the same User object when its profile changes, so React
@@ -55,7 +73,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading: user === undefined, signOut, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading: user === undefined, signingOut, signOut, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

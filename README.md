@@ -11,9 +11,35 @@ Client and server both run on Next.js. Authentication (Step 2) uses **Firebase A
 | 1 | Home page (desktop / tablet / mobile) + header menus | ✅ done |
 | 2 | Login + registration (Firebase Authentication, Expedia-style UI) | ✅ done |
 | 3 | Post-login dashboard (same structure and resort data as Koala's) | ✅ done |
-| History page | built next | ⏳ |
+| 4 | Booking History page + full-app testing | ✅ done |
 | 4 | _to be defined_ | ⏳ |
 | 5 | _to be defined_ | ⏳ |
+
+## What Step 4 adds (booking history + testing)
+
+`/pages/history` lists every booking from the resort data (same source as the dashboard):
+
+- **Summary cards** — bookings, paid out, pending, nights booked; they follow whatever is filtered.
+- **Filters** — search (reference, resort, location, dates), year, status, and sort (newest, oldest,
+  highest / lowest payout). They are kept in the URL (`?q=&year=&status=&sort=`), so a filtered
+  view survives a refresh and can be bookmarked; invalid values in the URL are ignored.
+- **Table** on tablet/desktop, **cards** on phones; 8 per page with **Show more**.
+- **Booking details** dialog (photo, dates, nights, status, payout, copy reference, "Search stays
+  nearby" which opens the home search prefilled). Closes with Esc, the backdrop or the buttons.
+- **Export CSV** of the filtered list (opens in Excel/Sheets).
+- The Dashboard has a "View booking history →" link, and the account menu's **History** opens the page.
+- Bug fixed: signing out from Dashboard/History now lands on the home page (it used to bounce
+  through the login page).
+
+Data: add a booking in `src/lib/dashboardContent.ts` and it appears on the dashboard and here.
+
+### Testing
+
+All of this was verified in a real browser (Chromium) at desktop 1920/1440, tablet 1024 and phone 430px:
+sign-in guard and redirects, History filters/sort/paging/URL sync/reload, empty state, CSV contents,
+dialog keyboard + mouse behaviour, menus (Dashboard / History / Sign out), registration + login
+error cases, and no horizontal overflow or console errors on any page (64 checks). `npm run lint`,
+`tsc` and `npm run build` pass.
 
 ## What Step 3 adds (dashboard)
 
@@ -37,7 +63,7 @@ update by themselves (instructions are at the top of the file). Resort photos li
 - The company name used in the dashboard copy is one constant: `BRAND_NAME` in
   `src/lib/dashboardContent.ts` (currently "Koala").
 - The Disney entry still has Koala's placeholder booking ID `KLXXXXXX`; replace it with the real one.
-- `/pages/history` is still a placeholder.
+- 
 
 ## What Step 2 adds (authentication)
 
@@ -50,7 +76,7 @@ update by themselves (instructions are at the top of the file). Resort photos li
 - **Menus when signed in** (desktop dropdown and the mobile user-icon menu): greeting with your
   email, **Dashboard**, **History**, Inbox, and **Sign out**. The header shows your first name.
 - `/pages/dashboard` and `/pages/history` are guarded: signed-out visitors are sent to login and
-  brought back afterwards. `/pages/dashboard` is built in Step 3; `/pages/history` is still a placeholder.
+  brought back afterwards. `/pages/dashboard` is built in Step 3; 
 
 ### Firebase setup (one time)
 
@@ -148,11 +174,12 @@ src/
                    ExploreWorld, SiteFooter
       login/ register/   Step 2 (thin wrappers around components/auth/AuthPage)
       dashboard/   Step 3 (RequireAuth + Koala's dashboard sections)
-      history/     placeholder (guarded by RequireAuth)
+      history/     Step 4 (RequireAuth + filters, table/cards, details dialog, CSV)
   components/      SiteHeader, AccountPanel, PreferencesDialog, Logo, UsFlag, HelpButton,
                    AuthProvider, RequireAuth, auth/ (AuthPage, TextField, GoogleIcon),
+                   history/ (HistoryClient, BookingDialog, StatusPill),
                    DashboardClient, ResortStub, PricingHero, PricingTable, GuaranteeSection, Testimonials
-  lib/             homeContent.ts, dashboardContent.ts (resort data), types.ts, firebase.ts,
+  lib/             homeContent.ts, dashboardContent.ts (resort data), types.ts, history.ts, firebase.ts,
                    authErrors.ts, useClickOutside.ts
 public/            images/, favicon.svg
 ```

@@ -1,15 +1,33 @@
+import HistoryClient from "@/components/history/HistoryClient";
 import RequireAuth from "@/components/RequireAuth";
+import SiteHeader from "@/components/SiteHeader";
+import { BRAND_NAME } from "@/lib/dashboardContent";
+import { Suspense } from "react";
 
-// Placeholder — the History page is built in a later step.
+// Server shell. The filters live in the URL (?q=&year=&status=&sort=), read with
+// useSearchParams() inside HistoryClient — which Next requires to sit in Suspense.
 export default function HistoryPage() {
   return (
     <RequireAuth>
-      <main className="flex min-h-screen items-center justify-center px-6 text-center">
-        <div>
-          <h1 className="font-display text-3xl">History</h1>
-          <p className="mt-2 text-sm text-xp-muted">Coming in a later step.</p>
-        </div>
+      <SiteHeader />
+
+      <main className="flex-1">
+        <Suspense
+          fallback={
+            <section className="mx-auto max-w-6xl px-6 py-12">
+              <p className="text-sm text-xp-muted">Loading your booking history…</p>
+            </section>
+          }
+        >
+          <HistoryClient />
+        </Suspense>
       </main>
+
+      <footer className="border-t border-xp-line bg-xp-gray">
+        <div className="mx-auto max-w-6xl px-6 py-8 text-sm text-xp-muted">
+          © {new Date().getFullYear()} {BRAND_NAME}&rsquo;s Resorts. Independently owned and operated.
+        </div>
+      </footer>
     </RequireAuth>
   );
 }
