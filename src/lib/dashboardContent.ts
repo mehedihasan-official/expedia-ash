@@ -2,7 +2,7 @@ import type { Resort, ResortBooking, Testimonial } from "@/lib/types";
 
 // Company name used in the dashboard copy (plans, member stories, testimonials,
 // footer). Change it here and every mention updates.
-export const BRAND_NAME = "Koala";
+export const BRAND_NAME = "Expedia";
 
 // ---------------------------------------------------------------------------
 // ADDING A NEW YEAR (e.g. 2027)
