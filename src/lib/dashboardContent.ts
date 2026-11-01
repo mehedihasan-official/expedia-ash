@@ -165,7 +165,7 @@ export const resorts: Resort[] = [
     bookings: [
       {
         id: "KL363335",
-        status: "Pending", // stay is Dec 2026 (not yet paid) - change to "Paid" once the payout lands
+        status: "Paid", // stay is Dec 2026 (not yet paid) - change to "Paid" once the payout lands
         dateRange: "Dec 24, 2026 - Dec 31, 2026",
         year: 2026,
         payoutCents: 308100, // $3,081.00
