@@ -107,13 +107,13 @@ export default function HistoryClient() {
       <p className="mb-2 text-sm font-semibold uppercase tracking-[0.14em] text-xp-blue">Your history</p>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h1 className="font-display text-4xl">Booking History</h1>
-        <button
+        {/* <button
           onClick={exportCsv}
           disabled={filtered.length === 0}
           className="inline-flex h-10 items-center gap-2 rounded-full border border-xp-outline px-4 text-sm font-semibold text-xp-blue transition hover:bg-xp-blue/5 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Download size={16} /> Export CSV
-        </button>
+        </button> */}
       </div>
 
       {/* ---- summary (follows the filters) ---- */}
